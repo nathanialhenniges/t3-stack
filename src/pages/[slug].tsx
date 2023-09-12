@@ -10,7 +10,27 @@ import type {
 import { prisma } from "~/server/db";
 import { appRouter } from "~/server/api/root";
 import superjson from "superjson";
-import { PageLayout } from "~/components/layout";
+import PageLayout from "~/components/layout";
+import { LoadingPage } from "~/components/loading";
+import PostView from "~/components/postview";
+
+const ProfileFeed = (props: { userId: string }) => {
+  const { data, isLoading } = api.posts.getPostsByUserId.useQuery({
+    userId: props.userId,
+  });
+
+  if (isLoading) return <LoadingPage />;
+
+  if (!data || data.length === 0) return <div>User has not posted</div>;
+
+  return (
+    <div className="flex flex-col">
+      {data.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id} />
+      ))}
+    </div>
+  );
+};
 
 type PageProps = InferGetServerSidePropsType<typeof getStaticProps>;
 
@@ -39,14 +59,17 @@ export default function ProfilePage({ username }: PageProps) {
         <div className="h-[64px]"></div>
         <div className="p-4 text-2xl font-bold">
           {`@${data.username}`}{" "}
-          <span title="Verified account" className="inline-block align-middle">
+          <span
+            title="Verified account"
+            className="inline-block pl-1 align-middle"
+          >
             <svg
-              width="24px"
-              height="24px"
+              width="16px"
+              height="16px"
               viewBox="0 0 17 17"
               className="VerifiedIcon"
             >
-              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g transform="translate(-767.000000, -573.000000)">
                   <g transform="translate(-80.000000, -57.000000)">
                     <g transform="translate(100.000000, 77.000000)">
@@ -73,6 +96,7 @@ export default function ProfilePage({ username }: PageProps) {
           </span>
         </div>
         <div className="w0full border-b border-slate-400"></div>
+        <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
   );
