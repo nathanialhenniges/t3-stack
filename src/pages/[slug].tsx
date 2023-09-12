@@ -41,7 +41,7 @@ export default function ProfilePage({ username }: PageProps) {
   return (
     <>
       <Head>
-        <title>{`@${data.username}`} Xitter</title>
+        <title>{`@${data.username}`} | Xitter</title>
       </Head>
       <PageLayout>
         <div className="relative h-36 bg-slate-600">
