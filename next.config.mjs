@@ -19,7 +19,7 @@ const config = {
   },
 
   images: {
-    domains: ["img.clerk.com"],
+    domains: ["img.clerk.com", "images.clerk.dev"],
   },
 };
 
