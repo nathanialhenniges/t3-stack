@@ -1,18 +1,15 @@
 import Head from "next/head";
 import Image from "next/image";
 import { api } from "~/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
 import type {
   GetStaticPropsContext,
   GetStaticPaths,
   InferGetServerSidePropsType,
 } from "next";
-import { prisma } from "~/server/db";
-import { appRouter } from "~/server/api/root";
-import superjson from "superjson";
 import PageLayout from "~/components/layout";
 import { LoadingPage } from "~/components/loading";
 import PostView from "~/components/postview";
+import { generateSsgHelper } from "~/server/helpers/ssgHelper";
 
 const ProfileFeed = (props: { userId: string }) => {
   const { data, isLoading } = api.posts.getPostsByUserId.useQuery({
@@ -105,14 +102,7 @@ export default function ProfilePage({ username }: PageProps) {
 export async function getStaticProps(
   context: GetStaticPropsContext<{ slug: string }>,
 ) {
-  const helpers = createServerSideHelpers({
-    router: appRouter,
-    ctx: {
-      prisma,
-      userId: null,
-    },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const helpers = generateSsgHelper();
 
   const slug = context.params?.slug;
   if (typeof slug !== "string") throw new Error("no slug");
