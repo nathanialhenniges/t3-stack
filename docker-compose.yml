@@ -1,0 +1,25 @@
+name: t3app
+services:
+  postgres:
+    image: 'postgres:16-alpine'
+    user: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: t3app
+    volumes:
+      - 't3app-postgres-data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-U'
+        - postgres
+        - '-d'
+        - t3app
+      interval: 5s
+      timeout: 20s
+      retries: 10
+
+volumes:
+  t3app-postgres-data:
