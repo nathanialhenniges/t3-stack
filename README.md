@@ -4,8 +4,8 @@ The codebase from Theo's [T3 App Router Tutorial on YouTube](https://github.com/
 
 ## TODO
 
-- [ ] Make it deploy (vercel)
-- [ ] Scaffold basic ui with mock data
+- [x] Make it deploy (vercel)
+- [x] Scaffold basic ui with mock data
 - [ ] Tidy up build process
 - [ ] Actually set up a database (vercel postgres)
 - [ ] Attach database to UI
