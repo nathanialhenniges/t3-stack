@@ -1,3 +1,7 @@
+import { db } from "~/server/db";
+
+export const dynamic = "force-dynamic";
+
 const mockUrls = [
   "https://utfs.io/f/62tumwn3V7UZef9R5htbXdEVNofQyzPqDiB4Z1pJKGxMulAj",
   "https://utfs.io/f/62tumwn3V7UZXoD5lSsi1T8aWmB5Ls9ngYtIbOeJp6MVoPQj",
@@ -10,12 +14,17 @@ const mockImages = mockUrls.map((url, index) => ({
   id: index + 1,
   url,
 }));
-export default function HomePage() {
+export default async function HomePage() {
+  const posts = await db.query.posts.findMany({});
   return (
     <main className="">
       <div className="flex flex-wrap gap-4">
-        {mockImages.map((image) => (
-          <div key={image.id} className="w-48">
+        {posts.map((post) => (
+          <div key={post.id}>{post.name}</div>
+        ))}
+
+        {[...mockImages, ...mockImages, ...mockImages].map((image, index) => (
+          <div key={image.id + "-" + index} className="w-48">
             <img src={image.url} />
           </div>
         ))}

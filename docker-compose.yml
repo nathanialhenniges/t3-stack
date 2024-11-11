@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: t3app
+    ports:
+      - '5432:5432'
     volumes:
       - 't3app-postgres-data:/var/lib/postgresql/data'
     healthcheck:
@@ -28,7 +30,7 @@ services:
       - REDIS_USERNAME=default
       - REDIS_PASSWORD=redis
     volumes:
-      - 'sonavault-redis-data:/data'
+      - 't3app-redis-data:/data'
     healthcheck:
       test:
         - CMD
@@ -39,3 +41,4 @@ services:
       retries: 10
 volumes:
   t3app-postgres-data:
+  t3app-redis-data:
